@@ -9,7 +9,7 @@ import {
 } from "./client.js";
 
 interface Input {
-  apiToken: string;
+  apiToken?: string;
   csv?: string;
   csvUrl?: string;
   columns: Array<{ name: string; type?: ColumnMetadata["type"]; description?: string }>;
@@ -21,6 +21,14 @@ interface Input {
 }
 
 const DEFAULT_BASE_URL = "https://api.ampledata.ai/api/v1";
+
+function resolveToken(input: Input): string {
+  const token = input.apiToken || process.env.AMPLEDATA_KEY;
+  if (!token) {
+    throw new Error("No API key: provide `apiToken` input or set the AMPLEDATA_KEY env var");
+  }
+  return token;
+}
 
 function sleep(seconds: number): Promise<void> {
   return new Promise((resolve) => setTimeout(resolve, seconds * 1000));
@@ -98,9 +106,9 @@ async function pushResults(client: AmpleDataClient, jobId: string): Promise<Enri
 
 await Actor.main(async () => {
   const input = (await Actor.getInput<Input>()) ?? ({} as Input);
-  if (!input.apiToken) throw new Error("`apiToken` is required");
+  const token = resolveToken(input);
 
-  const client = new AmpleDataClient(input.baseUrl ?? DEFAULT_BASE_URL, input.apiToken);
+  const client = new AmpleDataClient(input.baseUrl ?? DEFAULT_BASE_URL, token);
   const csv = await resolveCsv(input);
 
   const jobId = await startJob(client, input, csv);

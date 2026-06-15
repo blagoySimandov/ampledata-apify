@@ -6,7 +6,7 @@
     "apiToken": {
       "title": "AmpleData API key",
       "type": "string",
-      "description": "Required. Bring your own AmpleData API key (sk_live_...). Enrichment is billed per cell against this key's account balance. Generate a key at https://api.ampledata.ai account settings; it is stored encrypted and never shared.",
+      "description": "Optional. Bring your own AmpleData API key (sk_live_...) to be billed on your own account balance. If left empty, runs use the actor's built-in key (paid runs). Generate a key at https://api.ampledata.ai account settings; it is stored encrypted and never shared.",
       "editor": "textfield",
       "isSecret": true
     },
@@ -66,5 +66,5 @@
       "editor": "number"
     }
   },
-  "required": ["apiToken", "columns"]
+  "required": ["columns"]
 }

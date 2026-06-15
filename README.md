@@ -6,11 +6,19 @@ the columns you want filled in plain English, and get back cited, confidence-sco
 The actor runs one enrichment job and is **cancellable** — aborting the Apify run cancels the
 underlying AmpleData job via `POST /jobs/{jobID}/cancel`.
 
-## Bring your own key
+## API key
 
-This actor does **not** ship with an API key. Each user supplies their own AmpleData key in the
-`apiToken` input. Enrichment is billed per cell against that key's account balance, so you only
-ever pay for your own runs. Generate a key at <https://api.ampledata.ai> account settings.
+Two ways to supply the AmpleData key — the actor uses whichever is present:
+
+1. **Bring your own key** — set the `apiToken` input. Enrichment is billed per cell against
+   *your* AmpleData balance. Generate a key at <https://api.ampledata.ai> account settings.
+2. **Keyless** — leave `apiToken` empty. The actor falls back to the `AMPLEDATA_KEY` environment
+   variable configured on the actor, so users run without a key (these runs are billed by the
+   actor owner, typically via Apify monetization).
+
+`apiToken` always wins when both are set. The owner key lives in an Apify **secret environment
+variable** (Console → Actor → Settings → Environment variables → `AMPLEDATA_KEY`, marked Secret) —
+never hardcoded in source.
 
 ## Input
 
