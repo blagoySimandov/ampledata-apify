@@ -61,27 +61,55 @@ function buildColumns(input: Input): ColumnMetadata[] {
   }));
 }
 
-function registerCancel(client: AmpleDataClient, jobId: string): void {
-  Actor.on("aborting", async () => {
-    log.warning(`Run aborting — cancelling AmpleData job ${jobId}`);
+class CancelGuard {
+  private jobId?: string;
+  private requested = false;
+  private pending?: Promise<void>;
+
+  constructor(private readonly client: AmpleDataClient) {
+    Actor.on("aborting", () => this.trigger());
+  }
+
+  setJob(jobId: string): void {
+    this.jobId = jobId;
+    if (this.requested) this.trigger();
+  }
+
+  get aborted(): boolean {
+    return this.requested;
+  }
+
+  async settle(): Promise<void> {
+    await this.pending;
+  }
+
+  private trigger(): void {
+    this.requested = true;
+    if (this.jobId && !this.pending) this.pending = this.cancel(this.jobId);
+    else if (!this.jobId) log.warning("Abort before job started — will cancel once job ID is known");
+  }
+
+  private async cancel(jobId: string): Promise<void> {
     try {
-      await client.cancel(jobId);
+      log.warning(`Cancelling AmpleData job ${jobId}`);
+      await this.client.cancel(jobId);
       log.info(`Job ${jobId} cancelled`);
     } catch (err) {
       log.exception(err as Error, "Failed to cancel job");
     }
-  });
+  }
 }
 
 async function waitForJob(
   client: AmpleDataClient,
   jobId: string,
   intervalSecs: number,
+  guard: CancelGuard,
 ): Promise<JobProgress> {
   for (;;) {
     const progress = await client.getProgress(jobId);
     log.info(`Job ${jobId}: ${progress.status}`, progress.rows_by_stage);
-    if (isTerminal(progress.status)) return progress;
+    if (isTerminal(progress.status) || guard.aborted) return progress;
     await sleep(intervalSecs);
   }
 }
@@ -114,13 +142,15 @@ await Actor.main(async () => {
   const token = resolveToken(input);
 
   const client = new AmpleDataClient(input.baseUrl ?? DEFAULT_BASE_URL, token);
+  const guard = new CancelGuard(client);
   const csv = await resolveCsv(input);
 
   const jobId = await startJob(client, input, csv);
+  guard.setJob(jobId);
   log.info(`Started enrichment job ${jobId}`);
-  registerCancel(client, jobId);
 
-  const final = await waitForJob(client, jobId, input.pollIntervalSecs ?? 5);
+  const final = await waitForJob(client, jobId, input.pollIntervalSecs ?? 5, guard);
+  await guard.settle();
   const results = final.status === "COMPLETED" ? await pushResults(client, jobId) : [];
 
   await Actor.setValue("OUTPUT", {
