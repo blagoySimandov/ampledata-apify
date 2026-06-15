@@ -21,7 +21,7 @@ interface Input {
   insecureTLS?: boolean;
 }
 
-const DEFAULT_BASE_URL = "https://api.ampledata.io/api/v1";
+const DEFAULT_BASE_URL = "https://ampledata.io/api/v1";
 
 function resolveToken(input: Input): string {
   const token = input.apiToken || process.env.AMPLEDATA_KEY;
