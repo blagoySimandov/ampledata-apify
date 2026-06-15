@@ -6,6 +6,12 @@ the columns you want filled in plain English, and get back cited, confidence-sco
 The actor runs one enrichment job and is **cancellable** — aborting the Apify run cancels the
 underlying AmpleData job via `POST /jobs/{jobID}/cancel`.
 
+## Bring your own key
+
+This actor does **not** ship with an API key. Each user supplies their own AmpleData key in the
+`apiToken` input. Enrichment is billed per cell against that key's account balance, so you only
+ever pay for your own runs. Generate a key at <https://api.ampledata.ai> account settings.
+
 ## Input
 
 | Field | Required | Description |

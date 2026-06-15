@@ -6,7 +6,7 @@
     "apiToken": {
       "title": "AmpleData API key",
       "type": "string",
-      "description": "Your AmpleData API key (sk_live_...). Generate one from account settings.",
+      "description": "Required. Bring your own AmpleData API key (sk_live_...). Enrichment is billed per cell against this key's account balance. Generate a key at https://api.ampledata.ai account settings; it is stored encrypted and never shared.",
       "editor": "textfield",
       "isSecret": true
     },
