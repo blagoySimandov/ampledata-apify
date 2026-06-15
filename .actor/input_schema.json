@@ -14,7 +14,8 @@
       "title": "CSV content",
       "type": "string",
       "description": "Inline CSV to enrich. First row must be the header. Ignored when CSV URL is set.",
-      "editor": "textarea"
+      "editor": "textarea",
+      "prefill": "company\nstripe.com\nfigma.com\nnotion.so"
     },
     "csvUrl": {
       "title": "CSV URL",
@@ -35,7 +36,8 @@
       "title": "Key columns",
       "type": "array",
       "description": "Columns that identify each row (e.g. company name). Leave empty to let AmpleData pick.",
-      "editor": "stringList"
+      "editor": "stringList",
+      "prefill": ["company"]
     },
     "keyColumnDescription": {
       "title": "Key column description",
