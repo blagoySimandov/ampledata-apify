@@ -15,6 +15,7 @@
       "type": "string",
       "description": "Inline CSV to enrich. First row must be the header. Ignored when CSV URL is set.",
       "editor": "textarea",
+      "default": "company\nstripe.com\nfigma.com\nnotion.so",
       "prefill": "company\nstripe.com\nfigma.com\nnotion.so"
     },
     "csvUrl": {
@@ -28,6 +29,9 @@
       "type": "array",
       "description": "Columns AmpleData should fill in. Each item: { name, type, description }. type is one of string|number|boolean|date.",
       "editor": "json",
+      "default": [
+        { "name": "industry", "type": "string", "description": "The company's primary industry" }
+      ],
       "prefill": [
         { "name": "industry", "type": "string", "description": "The company's primary industry" }
       ]
@@ -37,6 +41,7 @@
       "type": "array",
       "description": "Columns that identify each row (e.g. company name). Leave empty to let AmpleData pick.",
       "editor": "stringList",
+      "default": ["company"],
       "prefill": ["company"]
     },
     "keyColumnDescription": {
@@ -68,5 +73,5 @@
       "editor": "number"
     }
   },
-  "required": ["columns"]
+  "required": []
 }
