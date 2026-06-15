@@ -6,7 +6,7 @@
     "apiToken": {
       "title": "AmpleData API key",
       "type": "string",
-      "description": "Optional. Bring your own AmpleData API key (sk_live_...) to be billed on your own account balance. If left empty, runs use the actor's built-in key (paid runs). Generate a key at https://api.ampledata.ai account settings; it is stored encrypted and never shared.",
+      "description": "Optional. Bring your own AmpleData API key (sk_live_...) to be billed on your own account balance. If left empty, runs use the actor's built-in key (paid runs). Generate a key at https://api.ampledata.io account settings; it is stored encrypted and never shared.",
       "editor": "textfield",
       "isSecret": true
     },
@@ -62,7 +62,7 @@
       "type": "string",
       "description": "AmpleData API base URL.",
       "editor": "textfield",
-      "default": "https://api.ampledata.ai/api/v1"
+      "default": "https://api.ampledata.io/api/v1"
     },
     "pollIntervalSecs": {
       "title": "Poll interval (seconds)",
@@ -71,6 +71,13 @@
       "default": 5,
       "minimum": 1,
       "editor": "number"
+    },
+    "insecureTLS": {
+      "title": "Disable TLS verification",
+      "type": "boolean",
+      "description": "Skip TLS certificate verification. Only enable for a self-hosted AmpleData endpoint with a self-signed certificate. Insecure — do not use against production.",
+      "default": false,
+      "editor": "checkbox"
     }
   },
   "required": []

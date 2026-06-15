@@ -1,6 +1,6 @@
 # AmpleData Enrichment — Apify Actor
 
-Enrich a CSV through the [AmpleData](https://api.ampledata.ai) API: upload a list, define
+Enrich a CSV through the [AmpleData](https://api.ampledata.io) API: upload a list, define
 the columns you want filled in plain English, and get back cited, confidence-scored cells.
 
 The actor runs one enrichment job and is **cancellable** — aborting the Apify run cancels the
@@ -11,7 +11,7 @@ underlying AmpleData job via `POST /jobs/{jobID}/cancel`.
 Two ways to supply the AmpleData key — the actor uses whichever is present:
 
 1. **Bring your own key** — set the `apiToken` input. Enrichment is billed per cell against
-   *your* AmpleData balance. Generate a key at <https://api.ampledata.ai> account settings.
+   *your* AmpleData balance. Generate a key at <https://api.ampledata.io> account settings.
 2. **Keyless** — leave `apiToken` empty. The actor falls back to the `AMPLEDATA_KEY` environment
    variable configured on the actor, so users run without a key (these runs are billed by the
    actor owner, typically via Apify monetization).
@@ -31,8 +31,9 @@ never hardcoded in source.
 | `keyColumns` | no | Identifying columns (e.g. `["company"]`). Empty → AmpleData picks. |
 | `keyColumnDescription` | no | Plain-English description of the key column. |
 | `rowLimit` | no | Max rows to process. |
-| `baseUrl` | no | API base URL. Default `https://api.ampledata.ai/api/v1`. |
+| `baseUrl` | no | API base URL. Default `https://api.ampledata.io/api/v1`. |
 | `pollIntervalSecs` | no | Progress poll interval. Default `5`. |
+| `insecureTLS` | no | Skip TLS verification. Only for a self-hosted endpoint with a self-signed cert. Insecure. |
 
 ### Example
 

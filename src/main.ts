@@ -18,9 +18,10 @@ interface Input {
   rowLimit?: number;
   baseUrl?: string;
   pollIntervalSecs?: number;
+  insecureTLS?: boolean;
 }
 
-const DEFAULT_BASE_URL = "https://api.ampledata.ai/api/v1";
+const DEFAULT_BASE_URL = "https://api.ampledata.io/api/v1";
 
 function resolveToken(input: Input): string {
   const token = input.apiToken || process.env.AMPLEDATA_KEY;
@@ -106,6 +107,10 @@ async function pushResults(client: AmpleDataClient, jobId: string): Promise<Enri
 
 await Actor.main(async () => {
   const input = (await Actor.getInput<Input>()) ?? ({} as Input);
+  if (input.insecureTLS) {
+    process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
+    log.warning("insecureTLS enabled — TLS certificate verification is disabled");
+  }
   const token = resolveToken(input);
 
   const client = new AmpleDataClient(input.baseUrl ?? DEFAULT_BASE_URL, token);
