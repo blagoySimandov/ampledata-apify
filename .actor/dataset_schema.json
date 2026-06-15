@@ -1,0 +1,14 @@
+{
+  "actorSpecification": 1,
+  "views": {
+    "overview": {
+      "title": "Enrichment results",
+      "transformation": {
+        "fields": ["key", "extracted_data", "confidence", "sources", "error"]
+      },
+      "display": {
+        "component": "table"
+      }
+    }
+  }
+}

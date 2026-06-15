@@ -1,0 +1,13 @@
+{
+  "actorSpecification": 1,
+  "name": "ampledata-enrichment",
+  "title": "AmpleData Enrichment",
+  "description": "Enrich a CSV dataset through the AmpleData API. Cancellable mid-run.",
+  "version": "0.1",
+  "buildTag": "latest",
+  "input": "./input_schema.json",
+  "dockerfile": "../Dockerfile",
+  "storages": {
+    "dataset": "./dataset_schema.json"
+  }
+}

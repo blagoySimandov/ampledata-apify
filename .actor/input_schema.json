@@ -1,0 +1,70 @@
+{
+  "title": "AmpleData Enrichment Input",
+  "type": "object",
+  "schemaVersion": 1,
+  "properties": {
+    "apiToken": {
+      "title": "AmpleData API key",
+      "type": "string",
+      "description": "Your AmpleData API key (sk_live_...). Generate one from account settings.",
+      "editor": "textfield",
+      "isSecret": true
+    },
+    "csv": {
+      "title": "CSV content",
+      "type": "string",
+      "description": "Inline CSV to enrich. First row must be the header. Ignored when CSV URL is set.",
+      "editor": "textarea"
+    },
+    "csvUrl": {
+      "title": "CSV URL",
+      "type": "string",
+      "description": "URL of a CSV file to download and enrich. Takes precedence over inline CSV.",
+      "editor": "textfield"
+    },
+    "columns": {
+      "title": "Columns to enrich",
+      "type": "array",
+      "description": "Columns AmpleData should fill in. Each item: { name, type, description }. type is one of string|number|boolean|date.",
+      "editor": "json",
+      "prefill": [
+        { "name": "industry", "type": "string", "description": "The company's primary industry" }
+      ]
+    },
+    "keyColumns": {
+      "title": "Key columns",
+      "type": "array",
+      "description": "Columns that identify each row (e.g. company name). Leave empty to let AmpleData pick.",
+      "editor": "stringList"
+    },
+    "keyColumnDescription": {
+      "title": "Key column description",
+      "type": "string",
+      "description": "Optional plain-English description of what the key column holds.",
+      "editor": "textfield"
+    },
+    "rowLimit": {
+      "title": "Row limit",
+      "type": "integer",
+      "description": "Maximum number of rows to process. Processes all rows if not set.",
+      "minimum": 1,
+      "editor": "number"
+    },
+    "baseUrl": {
+      "title": "API base URL",
+      "type": "string",
+      "description": "AmpleData API base URL.",
+      "editor": "textfield",
+      "default": "https://api.ampledata.ai/api/v1"
+    },
+    "pollIntervalSecs": {
+      "title": "Poll interval (seconds)",
+      "type": "integer",
+      "description": "How often to poll job progress.",
+      "default": 5,
+      "minimum": 1,
+      "editor": "number"
+    }
+  },
+  "required": ["apiToken", "columns"]
+}

@@ -1,0 +1,22 @@
+{
+  "name": "ampledata-actor",
+  "version": "0.1.0",
+  "type": "module",
+  "description": "Apify actor that enriches a CSV through the AmpleData API",
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "start": "node dist/main.js",
+    "build": "tsc",
+    "dev": "tsc && node dist/main.js"
+  },
+  "dependencies": {
+    "apify": "^3.2.6",
+    "csv-parse": "^5.5.6"
+  },
+  "devDependencies": {
+    "typescript": "^5.5.4",
+    "@types/node": "^20.14.0"
+  }
+}
